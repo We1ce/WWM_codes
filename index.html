@@ -246,10 +246,10 @@
                     return itemImages[key];
                 }
             }
-            return null; // 找不到圖就回傳 null
+            return null; // 查無圖片回傳 null
         }
 
-        // 渲染畫面
+        // 渲染用
         function renderCodes() {
             const container = document.getElementById('code-container');
             container.innerHTML = '';
@@ -258,7 +258,7 @@
                 const isExpired = item.expiry === "已過期";
                 const cardClass = isExpired ? "card expired" : "card";
                 
-                // 處理獎勵列表 HTML (加入圖片)
+                // 加入圖片
                 let rewardsHtml = '';
                 item.rewards.forEach(reward => {
                     const imgUrl = getImageUrl(reward);
@@ -266,10 +266,10 @@
                     rewardsHtml += `<div class="reward-item">${imgTag}<span>${reward}</span></div>`;
                 });
 
-                // 處理備註 HTML
+                // 備註 HTML
                 const noteHtml = item.note ? `<div class="note">📝 備註：${item.note}</div>` : '';
 
-                // 組裝卡片
+                // 彙整
                 const card = document.createElement('div');
                 card.className = cardClass;
                 card.innerHTML = `
@@ -318,4 +318,5 @@
         window.onload = renderCodes;
     </script>
 </body>
+
 </html>
