@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>燕雲十六聲 - 統整小幫手</title>
+    <title>燕雲十六聲 - 序號統整及小工具</title>
     <style>
         :root {
             --bg-color: #121212;
@@ -112,7 +112,7 @@
         .reward-icon { width: 24px; height: 24px; object-fit: contain; }
         .note { font-size: 0.9rem; color: var(--text-sub); margin-top: 5px; background-color: rgba(0,0,0,0.2); padding: 8px; border-left: 3px solid var(--gold); }
 
-        /* --- 每日任務區 --- */
+        /* --- 每日任務 --- */
         .task-header-row {
             display: flex;
             justify-content: space-between;
@@ -172,7 +172,7 @@
             color: var(--text-sub);
         }
 
-        /* 復古風核取方塊 */
+        /* 核取方塊 */
         input[type="checkbox"] {
             appearance: none;
             background-color: transparent;
@@ -301,7 +301,7 @@
     <!-- 分頁 2：每日任務 -->
     <div class="page-container" id="tasksPage">
         <div class="task-header-row">
-            <h2>每日待辦事項</h2>
+            <h2>每日任務</h2>
             <button class="clear-btn" onclick="clearTasks()">清除狀態</button>
         </div>
         <div id="tasks-container" style="display: flex; flex-direction: column; gap: 10px;">
@@ -548,6 +548,7 @@
 
 </body>
 </html>
+
 
 
 
