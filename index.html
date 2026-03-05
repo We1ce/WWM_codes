@@ -45,8 +45,10 @@
             margin-bottom: 30px;
             border-bottom: 2px solid #333;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             padding-bottom: 5px;
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
         .tab-btn {
@@ -73,8 +75,8 @@
 
         .page-container {
             width: 100%;
-            max-width: 800px;
-            display: none; /* 預設隱藏，由JS控制顯示 */
+            max-width: 900px; /* 加寬一點以容納表格 */
+            display: none; 
             flex-direction: column;
             gap: 15px;
         }
@@ -84,17 +86,7 @@
         }
 
         /* --- 序號卡片區 --- */
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
+        .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
         .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
         .card.expired { background-color: var(--expired-bg); border-color: var(--expired-border); opacity: 0.8; }
         .card.expired .code-text { color: var(--text-sub); text-decoration: line-through; }
@@ -113,173 +105,85 @@
         .note { font-size: 0.9rem; color: var(--text-sub); margin-top: 5px; background-color: rgba(0,0,0,0.2); padding: 8px; border-left: 3px solid var(--gold); }
 
         /* --- 每日任務區 --- */
-        .task-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .task-header-row h2 {
-            margin: 0;
-            color: var(--gold);
-            font-size: 1.3rem;
-        }
-
-        .clear-btn {
-            background-color: transparent;
-            border: 1px solid var(--expired-text);
-            color: var(--expired-text);
-            padding: 6px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .clear-btn:hover {
-            background-color: var(--expired-text);
-            color: #fff;
-        }
-
-        .task-item {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .task-item:hover {
-            border-color: #555;
-            background-color: #252525;
-        }
-
-        /* 任務完成的樣式 */
-        .task-item.completed {
-            opacity: 0.5;
-            border-color: #111;
-            background-color: #1a1a1a;
-        }
-
-        .task-item.completed .task-title {
-            text-decoration: line-through;
-            color: var(--text-sub);
-        }
-
-        /* 復古風核取方塊 */
-        input[type="checkbox"] {
-            appearance: none;
-            background-color: transparent;
-            margin: 0;
-            font: inherit;
-            color: var(--gold);
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--text-sub);
-            border-radius: 4px;
-            display: grid;
-            place-content: center;
-            cursor: pointer;
-            margin-top: 2px;
-        }
-
-        input[type="checkbox"]::before {
-            content: "";
-            width: 12px;
-            height: 12px;
-            transform: scale(0);
-            transition: 120ms transform ease-in-out;
-            box-shadow: inset 1em 1em var(--gold);
-            background-color: transform;
-            transform-origin: center;
-            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-        }
-
-        input[type="checkbox"]:checked {
-            border-color: var(--gold);
-        }
-
-        input[type="checkbox"]:checked::before {
-            transform: scale(1);
-        }
-
-        .task-content {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex: 1;
-        }
-
-        .task-title-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .task-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--text-main);
-            transition: color 0.2s;
-        }
-
-        .task-desc {
-            font-size: 0.9rem;
-            color: var(--text-sub);
-        }
-
-        /* 標籤設計 */
-        .badge {
-            font-size: 0.75rem;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
+        .task-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .task-header-row h2 { margin: 0; color: var(--gold); font-size: 1.3rem; }
+        .clear-btn { background-color: transparent; border: 1px solid var(--expired-text); color: var(--expired-text); padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+        .clear-btn:hover { background-color: var(--expired-text); color: #fff; }
+        .task-item { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 15px; display: flex; align-items: flex-start; gap: 15px; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .task-item:hover { border-color: #555; background-color: #252525; }
+        .task-item.completed { opacity: 0.5; border-color: #111; background-color: #1a1a1a; }
+        .task-item.completed .task-title { text-decoration: line-through; color: var(--text-sub); }
+        input[type="checkbox"] { appearance: none; background-color: transparent; margin: 0; font: inherit; color: var(--gold); width: 22px; height: 22px; border: 2px solid var(--text-sub); border-radius: 4px; display: grid; place-content: center; cursor: pointer; margin-top: 2px; }
+        input[type="checkbox"]::before { content: ""; width: 12px; height: 12px; transform: scale(0); transition: 120ms transform ease-in-out; box-shadow: inset 1em 1em var(--gold); background-color: transform; transform-origin: center; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); }
+        input[type="checkbox"]:checked { border-color: var(--gold); }
+        input[type="checkbox"]:checked::before { transform: scale(1); }
+        .task-content { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .task-title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .task-title { font-size: 1.1rem; font-weight: bold; color: var(--text-main); transition: color 0.2s; }
+        .task-desc { font-size: 0.9rem; color: var(--text-sub); }
+        .badge { font-size: 0.75rem; padding: 3px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 1px; white-space: nowrap; }
         .badge-loc { background-color: var(--badge-loc); color: #fff; }
         .badge-multi { background-color: var(--badge-multi); color: #fff; }
         .badge-single { background-color: var(--badge-single); color: #fff; }
 
+        /* --- 美食攤資料庫區 --- */
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .filter-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover { background-color: rgba(212, 175, 55, 0.2); color: var(--gold); }
+        .filter-btn.active { background-color: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background-color: var(--card-bg);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #333;
+            white-space: nowrap;
+        }
+
+        .data-table th { background-color: #252525; color: var(--gold); font-weight: bold; }
+        .data-table tr:hover { background-color: rgba(255, 255, 255, 0.05); }
+        .data-table tr:last-child td { border-bottom: none; }
+        
+        .text-gold { color: var(--gold); font-weight: bold; }
 
         /* 提示框 */
-        #toast {
-            visibility: hidden;
-            min-width: 200px;
-            background-color: #4caf50;
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 12px;
-            position: fixed;
-            z-index: 100;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            opacity: 0;
-            transition: opacity 0.3s, bottom 0.3s;
-        }
-
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            bottom: 50px;
-        }
+        #toast { visibility: hidden; min-width: 200px; background-color: #4caf50; color: #fff; text-align: center; border-radius: 8px; padding: 12px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
+        #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
 
         @media (max-width: 600px) {
             .card-header { flex-direction: column; align-items: flex-start; gap: 10px; }
             .status-badge { align-self: flex-start; }
-            .nav-tabs { justify-content: space-around; }
-            .tab-btn { flex: 1; text-align: center; }
+            .nav-tabs { justify-content: flex-start; }
+            .tab-btn { flex: 0 0 auto; }
         }
     </style>
 </head>
@@ -291,6 +195,7 @@
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('codesPage', this)">兌換碼總覽</button>
         <button class="tab-btn" onclick="switchTab('tasksPage', this)">每日任務</button>
+        <button class="tab-btn" onclick="switchTab('foodPage', this)">美食攤資料庫</button>
     </div>
 
     <!-- 分頁 1：兌換碼總覽 -->
@@ -309,6 +214,44 @@
         </div>
     </div>
 
+    <!-- 分頁 3：美食攤資料庫 -->
+    <div class="page-container" id="foodPage">
+        <div class="task-header-row">
+            <h2>各地美食攤一覽</h2>
+        </div>
+        
+        <!-- 過濾按鈕區 -->
+        <div class="filter-container" id="filter-container">
+            <button class="filter-btn active" onclick="filterFood('全部', this)">全部</button>
+            <button class="filter-btn" onclick="filterFood('採藥', this)">採藥</button>
+            <button class="filter-btn" onclick="filterFood('垂釣', this)">垂釣</button>
+            <button class="filter-btn" onclick="filterFood('砍伐', this)">砍伐</button>
+            <button class="filter-btn" onclick="filterFood('挖礦', this)">挖礦</button>
+            <button class="filter-btn" onclick="filterFood('狩獵', this)">狩獵</button>
+        </div>
+
+        <!-- 表格區 -->
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>NPC</th>
+                        <th>類別</th>
+                        <th>美食</th>
+                        <th>效果類型</th>
+                        <th>效果</th>
+                        <th>持續時間(分)</th>
+                        <th>短陌錢</th>
+                        <th>界碑</th>
+                    </tr>
+                </thead>
+                <tbody id="food-tbody">
+                    <!-- 資料庫內容將由 JS 動態生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- 提示框 -->
     <div id="toast">提示訊息</div>
 
@@ -317,11 +260,8 @@
         //  UI 互動與分頁切換
         // ==========================================
         function switchTab(pageId, btnElement) {
-            // 更新按鈕樣式
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-
-            // 更新頁面顯示
             document.querySelectorAll('.page-container').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
@@ -344,7 +284,6 @@
             "繞樑之音": "./images/item4.png"
         };
 
-         // --- 序號資料庫 (已依照你提供的發布順序排列) ---
         const codesData = [
             { code: "WWMGLtiktok", rewards: ["長鳴玉×10", "通寶×10,000"], expiry: "已過期", note: "" },
             { code: "WWMGLyoutube", rewards: ["長鳴玉×20", "通寶×5,000", "心法心得．散本×1"], expiry: "已過期", note: "" },
@@ -419,8 +358,6 @@
         // ==========================================
         //  分頁 2：每日任務系統
         // ==========================================
-        
-        // 將你提供的清單整理成乾淨的資料格式
         const dailyTasksData = [
             { id: "task_1", title: "懸賞", desc: "", type: "", location: "" },
             { id: "task_2", title: "採集素材", desc: "奇術/武學突破素材、製作弓箭/弓玦", type: "", location: "" },
@@ -437,82 +374,60 @@
             { id: "task_15", title: "天下第一枝(報紙)", desc: "每日答題活動。F2動作＞看報。", type: "", location: "開封" }
         ];
 
-        // 讀取 LocalStorage 中的任務狀態
         function getTaskState() {
             const saved = localStorage.getItem('yanyun_tasks_state');
             return saved ? JSON.parse(saved) : {};
         }
 
-        // 儲存狀態到 LocalStorage
         function saveTaskState(state) {
             localStorage.setItem('yanyun_tasks_state', JSON.stringify(state));
         }
 
-        // 點擊整個任務區塊都能觸發打勾
         function toggleTask(taskId) {
             const state = getTaskState();
             const checkbox = document.getElementById(`cb_${taskId}`);
             const taskDiv = document.getElementById(`div_${taskId}`);
-            
-            // 反轉狀態
             const isCompleted = !state[taskId];
             state[taskId] = isCompleted;
             
-            // 更新 UI 與儲存
             checkbox.checked = isCompleted;
-            if (isCompleted) {
-                taskDiv.classList.add('completed');
-            } else {
-                taskDiv.classList.remove('completed');
-            }
+            if (isCompleted) { taskDiv.classList.add('completed'); } 
+            else { taskDiv.classList.remove('completed'); }
             saveTaskState(state);
         }
 
-        // 清除所有任務狀態
         function clearTasks() {
             if(confirm("確定要清除所有每日任務的完成狀態嗎？")) {
                 localStorage.removeItem('yanyun_tasks_state');
-                renderTasks(); // 重新渲染列表
+                renderTasks(); 
                 showToast("已重設每日任務狀態");
             }
         }
 
-        // 渲染每日任務清單
         function renderTasks() {
             const container = document.getElementById('tasks-container');
             container.innerHTML = '';
             const currentState = getTaskState();
 
             dailyTasksData.forEach(task => {
-                const isCompleted = !!currentState[task.id]; // 判斷是否打勾
+                const isCompleted = !!currentState[task.id]; 
                 
-                // 處理標籤 (界碑、單多人)
                 let badgesHtml = '';
-                if (task.location) {
-                    badgesHtml += `<span class="badge badge-loc">[${task.location}]</span>`;
-                }
-                if (task.type === "多人") {
-                    badgesHtml += `<span class="badge badge-multi">多人</span>`;
-                } else if (task.type === "單人") {
-                    badgesHtml += `<span class="badge badge-single">單人</span>`;
-                }
+                if (task.location) badgesHtml += `<span class="badge badge-loc">[${task.location}]</span>`;
+                if (task.type === "多人") badgesHtml += `<span class="badge badge-multi">多人</span>`;
+                else if (task.type === "單人") badgesHtml += `<span class="badge badge-single">單人</span>`;
 
-                // 處理描述
                 const descHtml = task.desc ? `<div class="task-desc">${task.desc}</div>` : '';
 
-                // 建立任務區塊
                 const taskEl = document.createElement('div');
                 taskEl.className = `task-item ${isCompleted ? 'completed' : ''}`;
                 taskEl.id = `div_${task.id}`;
-                taskEl.onclick = () => toggleTask(task.id); // 點擊卡片觸發
+                taskEl.onclick = () => toggleTask(task.id); 
 
                 taskEl.innerHTML = `
                     <input type="checkbox" id="cb_${task.id}" ${isCompleted ? 'checked' : ''} onclick="event.stopPropagation(); toggleTask('${task.id}')">
                     <div class="task-content">
-                        <div class="task-title-row">
-                            ${badgesHtml}
-                            <span class="task-title">${task.title}</span>
-                        </div>
+                        <div class="task-title-row">${badgesHtml}<span class="task-title">${task.title}</span></div>
                         ${descHtml}
                     </div>
                 `;
@@ -521,20 +436,96 @@
         }
 
         // ==========================================
+        //  分頁 3：美食攤資料庫系統
+        // ==========================================
+        const foodData = [
+            { npc: "潘明榮", type: "招牌菜", name: "棗蒸餅", effectType: "採藥", effect: "2級：爆擊率+7.5%", duration: "20", cost: "15", loc: "清河-慈心鎮" },
+            { npc: "潘明榮", type: "私房菜", name: "七寶蒸餅", effectType: "採藥", effect: "2級：爆擊率+15%", duration: "20", cost: "50", loc: "清河-慈心鎮" },
+            { npc: "元鹹鹹", type: "招牌菜", name: "把子肉", effectType: "", effect: "", duration: "", cost: "", loc: "清河-神仙渡" },
+            { npc: "元鹹鹹", type: "私房菜", name: "酥鍋", effectType: "", effect: "", duration: "", cost: "", loc: "清河-神仙渡" },
+            { npc: "元甜甜", type: "招牌菜", name: "蜜汁梨球", effectType: "", effect: "", duration: "", cost: "", loc: "清河-神仙渡" },
+            { npc: "元甜甜", type: "私房菜", name: "八寶梨罐", effectType: "", effect: "", duration: "", cost: "", loc: "清河-神仙渡" },
+            { npc: "李大娘", type: "招牌菜", name: "馬酪酥", effectType: "", effect: "", duration: "", cost: "", loc: "清河-伏馬庄" },
+            { npc: "李大娘", type: "私房菜", name: "辣酪酥", effectType: "", effect: "", duration: "", cost: "", loc: "清河-伏馬庄" },
+            { npc: "燕豐子", type: "招牌菜", name: "醬炒田螺", effectType: "", effect: "", duration: "", cost: "", loc: "清河-豐禾村" },
+            { npc: "燕豐子", type: "私房菜", name: "螺絲肉", effectType: "", effect: "", duration: "", cost: "", loc: "清河-豐禾村" },
+            { npc: "石面", type: "招牌菜", name: "蘿菔麵", effectType: "垂釣,砍伐", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-承恩鎮南" },
+            { npc: "石面", type: "私房菜", name: "百合麵", effectType: "垂釣,砍伐", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-承恩鎮南" },
+            { npc: "王其順", type: "招牌菜", name: "筍肉饅頭", effectType: "挖礦,狩獵", effect: "1級：爆擊率20%", duration: "20", cost: "15", loc: "開封-承恩鎮南" },
+            { npc: "王其順", type: "私房菜", name: "通神餅", effectType: "挖礦,狩獵", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-承恩鎮南" },
+            { npc: "大刀陳", type: "招牌菜", name: "銀絲魚膾", effectType: "採藥,砍伐", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-御苑北" },
+            { npc: "大刀陳", type: "私房菜", name: "旋切魚膾", effectType: "採藥,砍伐", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-御苑北" },
+            { npc: "郝閒", type: "招牌菜", name: "黃泉釀", effectType: "挖礦", effect: "1級：爆擊率10%", duration: "10", cost: "15", loc: "開封-鬼市子" },
+            { npc: "郝閒", type: "私房菜", name: "忘川渡", effectType: "挖礦", effect: "2級：爆擊率20%", duration: "10", cost: "50", loc: "開封-鬼市子" },
+            { npc: "湯谷", type: "招牌菜", name: "冰涼湯茶", effectType: "垂釣,採藥", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-鴻溝古渠的東邊" },
+            { npc: "湯谷", type: "私房菜", name: "水飯", effectType: "垂釣,採藥", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-鴻溝古渠的東邊" },
+            { npc: "夜辛", type: "招牌菜", name: "批切羊頭", effectType: "垂釣", effect: "1級：爆擊率10%", duration: "10", cost: "15", loc: "開封-東十字街(勾欄瓦肆)" },
+            { npc: "夜辛", type: "私房菜", name: "凍薑豉蹄子", effectType: "垂釣", effect: "2級：爆擊率20%", duration: "10", cost: "50", loc: "開封-東十字街(勾欄瓦肆)" },
+            { npc: "尹千霜", type: "招牌菜", name: "荳蔻飲", effectType: "狩獵", effect: "1級：爆擊率10%", duration: "10", cost: "15", loc: "開封-東十字街" },
+            { npc: "尹千霜", type: "私房菜", name: "水晶皂兒", effectType: "狩獵", effect: "2級：爆擊率20%", duration: "10", cost: "50", loc: "開封-東十字街" },
+            { npc: "牛莽", type: "招牌菜", name: "麥飯", effectType: "採藥", effect: "1級：爆擊率10%", duration: "10", cost: "15", loc: "開封-角門里(毛天佑棋局)" },
+            { npc: "牛莽", type: "私房菜", name: "炒雞麵", effectType: "採藥", effect: "2級：爆擊率20%", duration: "10", cost: "50", loc: "開封-角門里(毛天佑棋局)" },
+            { npc: "伏苓", type: "招牌菜", name: "金玉羹", effectType: "採藥,狩獵", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-聆杏村" },
+            { npc: "伏苓", type: "私房菜", name: "菊苗煎", effectType: "採藥,狩獵", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-聆杏村" },
+            { npc: "于不遲", type: "招牌菜", name: "鮮魚麵", effectType: "挖礦,採藥", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-角門里(西邊)" },
+            { npc: "于不遲", type: "私房菜", name: "汆魚圓", effectType: "挖礦,採藥", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-角門里(西邊)" },
+            { npc: "鮮有餘", type: "招牌菜", name: "醃鹹魚", effectType: "垂釣,狩獵", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-天上來渡" },
+            { npc: "鮮有餘", type: "私房菜", name: "鮑味鹹魚", effectType: "垂釣,狩獵", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-天上來渡" },
+            { npc: "馬曼兒", type: "招牌菜", name: "齋菜餛飩", effectType: "狩獵,砍伐", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-萬勝鎮南" },
+            { npc: "馬曼兒", type: "私房菜", name: "百味餛飩", effectType: "狩獵,砍伐", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-萬勝鎮南" },
+            { npc: "海無量", type: "招牌菜", name: "老味胡辣湯", effectType: "挖礦,採藥", effect: "1級：爆擊率10%", duration: "20", cost: "15", loc: "開封-萬勝鎮南" },
+            { npc: "海無量", type: "私房菜", name: "兩摻兒", effectType: "挖礦,採藥", effect: "2級：爆擊率20%", duration: "20", cost: "50", loc: "開封-萬勝鎮南" }
+        ];
+
+        function renderFoodTable(filterValue = '全部') {
+            const tbody = document.getElementById('food-tbody');
+            tbody.innerHTML = '';
+
+            foodData.forEach(item => {
+                // 如果不是選全部，且該食物效果不包含點選的關鍵字，就跳過不渲染
+                if (filterValue !== '全部' && !item.effectType.includes(filterValue)) {
+                    return; 
+                }
+
+                const typeClass = item.type === '私房菜' ? 'text-gold' : '';
+                const displayEffectType = item.effectType || '-';
+                const displayEffect = item.effect || '-';
+                const displayDuration = item.duration || '-';
+                const displayCost = item.cost || '-';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.npc}</td>
+                    <td class="${typeClass}">${item.type}</td>
+                    <td>${item.name}</td>
+                    <td>${displayEffectType}</td>
+                    <td>${displayEffect}</td>
+                    <td>${displayDuration}</td>
+                    <td>${displayCost}</td>
+                    <td><span class="badge badge-loc">${item.loc}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 點擊過濾按鈕的觸發事件
+        function filterFood(type, btnElement) {
+            // 切換按鈕樣式
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            // 重新渲染表格
+            renderFoodTable(type);
+        }
+
+        // ==========================================
         //  初始化
         // ==========================================
         window.onload = function() {
             renderCodes();
             renderTasks();
+            renderFoodTable('全部'); // 初始化顯示全部食物
         };
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
