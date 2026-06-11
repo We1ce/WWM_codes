@@ -85,6 +85,42 @@
             display: flex;
         }
 
+        /* --- 共同控制區塊 --- */
+        .controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .controls-row h2 {
+            margin: 0;
+            color: var(--gold);
+            font-size: 1.3rem;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover { background-color: rgba(212, 175, 55, 0.2); color: var(--gold); }
+        .filter-btn.active { background-color: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
+
         /* --- 序號卡片區 --- */
         .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
         .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
@@ -105,8 +141,6 @@
         .note { font-size: 0.9rem; color: var(--text-sub); margin-top: 5px; background-color: rgba(0,0,0,0.2); padding: 8px; border-left: 3px solid var(--gold); }
 
         /* --- 每日任務區 --- */
-        .task-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .task-header-row h2 { margin: 0; color: var(--gold); font-size: 1.3rem; }
         .clear-btn { background-color: transparent; border: 1px solid var(--expired-text); color: var(--expired-text); padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
         .clear-btn:hover { background-color: var(--expired-text); color: #fff; }
         .task-item { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 15px; display: flex; align-items: flex-start; gap: 15px; cursor: pointer; transition: all 0.2s; user-select: none; }
@@ -127,27 +161,6 @@
         .badge-single { background-color: var(--badge-single); color: #fff; }
 
         /* --- 美食攤資料庫區 --- */
-        .filter-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        
-        .filter-btn {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-sub);
-            padding: 6px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-        }
-        
-        .filter-btn:hover { background-color: rgba(212, 175, 55, 0.2); color: var(--gold); }
-        .filter-btn.active { background-color: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
-
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -200,12 +213,20 @@
 
     <!-- 分頁 1：兌換碼總覽 -->
     <div class="page-container active" id="codesPage">
-        <!-- 序號卡片將由 JS 動態生成 -->
+        <div class="controls-row">
+            <h2>遊戲兌換碼</h2>
+            <div class="filter-container">
+                <button class="filter-btn" id="btn-sort-code" onclick="toggleCodeSort()">排序：最新發布 ↓</button>
+                <button class="filter-btn" id="btn-filter-code" onclick="toggleCodeFilter()">僅顯示可兌換</button>
+            </div>
+        </div>
+        <!-- 序號卡片將動態生成於此容器內 -->
+        <div id="code-list-container" style="display: flex; flex-direction: column; gap: 15px;"></div>
     </div>
 
     <!-- 分頁 2：每日任務 -->
     <div class="page-container" id="tasksPage">
-        <div class="task-header-row">
+        <div class="controls-row">
             <h2>每日任務</h2>
             <button class="clear-btn" onclick="clearTasks()">清除狀態</button>
         </div>
@@ -216,12 +237,12 @@
 
     <!-- 分頁 3：美食攤資料庫 -->
     <div class="page-container" id="foodPage">
-        <div class="task-header-row">
+        <div class="controls-row" style="margin-bottom: 0;">
             <h2>機率觸發爆擊，有機會拿到更多素材。</h2>
         </div>
         
         <!-- 過濾按鈕區 -->
-        <div class="filter-container" id="filter-container">
+        <div class="filter-container" style="margin-bottom: 10px;">
             <button class="filter-btn active" onclick="filterFood('全部', this)">全部</button>
             <button class="filter-btn" onclick="filterFood('採藥', this)">採藥</button>
             <button class="filter-btn" onclick="filterFood('垂釣', this)">垂釣</button>
@@ -324,6 +345,10 @@
             { code: "WFNRACM4RW", rewards: [""], expiry: "可兌換", note: "2026/6/11新增" }
         ];
 
+        // 篩選與排序狀態變數
+        let sortCodesNewest = true; // 預設為最新發布
+        let filterOnlyActive = false; // 預設顯示全部
+
         function getImageUrl(rewardText) {
             for (const key in itemImages) {
                 if (rewardText.includes(key)) return itemImages[key];
@@ -331,16 +356,62 @@
             return null;
         }
 
+        // 切換排序
+        function toggleCodeSort() {
+            sortCodesNewest = !sortCodesNewest;
+            const btn = document.getElementById('btn-sort-code');
+            if (sortCodesNewest) {
+                btn.innerText = "排序：最新發布 ↓";
+            } else {
+                btn.innerText = "排序：最早發布 ↑";
+            }
+            renderCodes();
+        }
+
+        // 切換篩選
+        function toggleCodeFilter() {
+            filterOnlyActive = !filterOnlyActive;
+            const btn = document.getElementById('btn-filter-code');
+            if (filterOnlyActive) {
+                btn.classList.add('active');
+                btn.innerText = "顯示全部";
+            } else {
+                btn.classList.remove('active');
+                btn.innerText = "僅顯示可兌換";
+            }
+            renderCodes();
+        }
+
         function renderCodes() {
-            const container = document.getElementById('codesPage');
+            const container = document.getElementById('code-list-container');
             container.innerHTML = '';
 
-            codesData.forEach(item => {
+            // 複製一份陣列來進行處理，避免動到原始資料
+            let processedCodes = [...codesData];
+
+            // 1. 執行篩選
+            if (filterOnlyActive) {
+                processedCodes = processedCodes.filter(item => item.expiry !== "已過期");
+            }
+
+            // 2. 執行排序 (原陣列為最早 -> 最新)
+            if (sortCodesNewest) {
+                processedCodes.reverse(); // 反轉後變成最新 -> 最早
+            }
+
+            // 3. 渲染卡片
+            if (processedCodes.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-sub);">目前沒有符合條件的兌換碼</p>';
+                return;
+            }
+
+            processedCodes.forEach(item => {
                 const isExpired = item.expiry === "已過期";
                 const cardClass = isExpired ? "card expired" : "card";
                 
                 let rewardsHtml = '';
                 item.rewards.forEach(reward => {
+                    if (reward.trim() === "") return; // 處理空獎勵的情況
                     const imgUrl = getImageUrl(reward);
                     const imgTag = imgUrl ? `<img src="${imgUrl}" class="reward-icon" alt="icon" onerror="this.style.display='none'">` : '';
                     rewardsHtml += `<div class="reward-item">${imgTag}<span>${reward}</span></div>`;
@@ -537,7 +608,7 @@
         // 點擊過濾按鈕的觸發事件
         function filterFood(type, btnElement) {
             // 切換按鈕樣式
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#foodPage .filter-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
             
             // 重新渲染表格
@@ -555,7 +626,3 @@
     </script>
 </body>
 </html>
-
-
-
-
