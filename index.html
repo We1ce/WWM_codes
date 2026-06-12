@@ -342,10 +342,13 @@
             { code: "EAD6EXNA4A", rewards: ["長鳴玉×10", "通寶×20,000", "心法心得．散本×2", "振玉×2"], expiry: "可兌換", note: "2026/6/11新增" },
             { code: "JF3MYHDKWX", rewards: ["長鳴玉×10", "通寶×20,000", "心法心得．散本×2", "振玉×2"], expiry: "可兌換", note: "2026/6/11新增" },
             { code: "PMHXDPHKQT", rewards: ["長鳴玉×10", "通寶×20,000", "心法心得．散本×2", "振玉×2"], expiry: "可兌換", note: "2026/6/11新增" },
-            { code: "WFNRACM4RW", rewards: ["長鳴玉×10", "通寶×20,000", "心法心得．散本×2", "振玉×2"], expiry: "可兌換", note: "2026/6/11新增" }
+            { code: "WFNRACM4RW", rewards: ["長鳴玉×10", "通寶×20,000", "心法心得．散本×2", "振玉×2"], expiry: "可兌換", note: "2026/6/11新增" },
+            { code: "rxn43jtdta", rewards: [""], expiry: "可兌換", note: "2026/6/12新增" },
+            { code: "psytndr6y7", rewards: [""], expiry: "可兌換", note: "2026/6/12新增" },
+            { code: "xtq3ntj8fa", rewards: [""], expiry: "可兌換", note: "2026/6/12新增" },
         ];
 
-        // 篩選與排序狀態變數
+        // 篩選與排序
         let sortCodesNewest = true; // 預設為最新發布
         let filterOnlyActive = false; // 預設顯示全部
 
@@ -386,7 +389,7 @@
             const container = document.getElementById('code-list-container');
             container.innerHTML = '';
 
-            // 複製一份陣列來進行處理，避免動到原始資料
+            // 複製一份陣列來進行處理，避免原始資料異動
             let processedCodes = [...codesData];
 
             // 1. 執行篩選
