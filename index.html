@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>燕雲十六聲｜兌換碼總覽</title>
+    <title>燕雲十六聲｜兌換碼</title>
     <style>
         :root {
             --bg-color: #121212;
@@ -75,7 +75,7 @@
 
         .page-container {
             width: 100%;
-            max-width: 900px; /* 加寬一點以容納表格 */
+            max-width: 900px; /* 加寬 */
             display: none; 
             flex-direction: column;
             gap: 15px;
@@ -121,7 +121,7 @@
         .filter-btn:hover { background-color: rgba(212, 175, 55, 0.2); color: var(--gold); }
         .filter-btn.active { background-color: var(--gold); color: #000; border-color: var(--gold); font-weight: bold; }
 
-        /* --- 序號卡片區 --- */
+        /* --- 兌換碼方塊 --- */
         .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; position: relative; transition: transform 0.2s, box-shadow 0.2s; }
         .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
         .card.expired { background-color: var(--expired-bg); border-color: var(--expired-border); opacity: 0.8; }
@@ -140,7 +140,7 @@
         .reward-icon { width: 24px; height: 24px; object-fit: contain; }
         .note { font-size: 0.9rem; color: var(--text-sub); margin-top: 5px; background-color: rgba(0,0,0,0.2); padding: 8px; border-left: 3px solid var(--gold); }
 
-        /* --- 每日任務區 --- */
+        /* --- 每日任務方塊 --- */
         .clear-btn { background-color: transparent; border: 1px solid var(--expired-text); color: var(--expired-text); padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
         .clear-btn:hover { background-color: var(--expired-text); color: #fff; }
         .task-item { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 15px; display: flex; align-items: flex-start; gap: 15px; cursor: pointer; transition: all 0.2s; user-select: none; }
@@ -160,7 +160,7 @@
         .badge-multi { background-color: var(--badge-multi); color: #fff; }
         .badge-single { background-color: var(--badge-single); color: #fff; }
 
-        /* --- 美食攤資料庫區 --- */
+        /* --- 美食攤方塊 --- */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -211,16 +211,16 @@
         <button class="tab-btn" onclick="switchTab('foodPage', this)">美食攤資料庫</button>
     </div>
 
-    <!-- 分頁 1：兌換碼總覽 -->
+    <!-- 分頁 1：兌換碼 -->
     <div class="page-container active" id="codesPage">
         <div class="controls-row">
-            <h2>遊戲兌換碼</h2>
+            <h2>設定＞其他＞兌換碼</h2>
             <div class="filter-container">
                 <button class="filter-btn" id="btn-sort-code" onclick="toggleCodeSort()">排序：最新發布 ↓</button>
                 <button class="filter-btn" id="btn-filter-code" onclick="toggleCodeFilter()">僅顯示可兌換</button>
             </div>
         </div>
-        <!-- 序號卡片將動態生成於此容器內 -->
+        <!-- 序號卡片會動態生成在這 -->
         <div id="code-list-container" style="display: flex; flex-direction: column; gap: 15px;"></div>
     </div>
 
@@ -231,7 +231,7 @@
             <button class="clear-btn" onclick="clearTasks()">清除狀態</button>
         </div>
         <div id="tasks-container" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- 任務列表將由 JS 動態生成 -->
+            <!-- JS 動態任務列表 -->
         </div>
     </div>
 
@@ -241,7 +241,7 @@
             <h2>機率觸發爆擊，有機會拿到更多素材。</h2>
         </div>
         
-        <!-- 過濾按鈕區 -->
+        <!-- 篩選按鈕 -->
         <div class="filter-container" style="margin-bottom: 10px;">
             <button class="filter-btn active" onclick="filterFood('全部', this)">全部</button>
             <button class="filter-btn" onclick="filterFood('採藥', this)">採藥</button>
@@ -251,7 +251,7 @@
             <button class="filter-btn" onclick="filterFood('狩獵', this)">狩獵</button>
         </div>
 
-        <!-- 表格區 -->
+        <!-- 表格 -->
         <div class="table-wrapper">
             <table class="data-table">
                 <thead>
@@ -296,7 +296,7 @@
         }
 
         // ==========================================
-        //  分頁 1：序號統整系統
+        //  分頁 1：兌換碼
         // ==========================================
         const itemImages = {
             "長鳴玉": "./images/item1.png",
@@ -402,7 +402,7 @@
             const container = document.getElementById('code-list-container');
             container.innerHTML = '';
 
-            // 複製一份陣列來進行處理，避免原始資料異動
+            // 複製一份陣列進行處理，避免原始資料異動
             let processedCodes = [...codesData];
 
             // 1. 執行篩選
@@ -469,7 +469,7 @@
         }
 
         // ==========================================
-        //  分頁 2：每日任務系統
+        //  分頁 2：每日任務
         // ==========================================
         const dailyTasksData = [
             { id: "task_1", title: "懸賞", desc: "", type: "", location: "" },
@@ -549,7 +549,7 @@
         }
 
         // ==========================================
-        //  分頁 3：美食攤資料庫系統
+        //  分頁 3：美食攤資料庫
         // ==========================================
         const foodData = [
             { npc: "潘明榮", type: "招牌菜", name: "棗蒸餅", effectType: "採藥", effect: "2級：爆擊率+7.5%", duration: "20", cost: "15", loc: "清河-慈心鎮" },
@@ -595,7 +595,7 @@
             tbody.innerHTML = '';
 
             foodData.forEach(item => {
-                // 如果不是選全部，且該食物效果不包含點選的關鍵字，就跳過不渲染
+                // 如果不是選全部，且該食物效果不包含點選的關鍵字，就pass不渲染
                 if (filterValue !== '全部' && !item.effectType.includes(filterValue)) {
                     return; 
                 }
@@ -621,7 +621,7 @@
             });
         }
 
-        // 點擊過濾按鈕的觸發事件
+        // 點擊篩選按鈕後觸發事件
         function filterFood(type, btnElement) {
             // 切換按鈕樣式
             document.querySelectorAll('#foodPage .filter-btn').forEach(btn => btn.classList.remove('active'));
